@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MP3 Player</title>
+    <style>
+        #player {
+            font-family: Arial, Helvetica, sans-serif;
+            width: 100%;
+            max-width: 500px;
+            border: 1px solid black;
+            padding: 20px;
+            background-color: #eee;
+            margin: 20px;
+        }
+
+        button{
+            width: 100%;
+            background-color: orange;
+            margin-bottom: 10px;
+            height: 50px;
+            font-size: 1.4em;
+            font-weight: bold;
+            color: white;
+        }
+
+        #btnNextSong {
+            background-color: yellow;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <div id="player">
+        <h1>Simple MP3 Player</h1>
+        <h3>Song Title: <output id="songTitle"></output> </h3>
+        <button id="btnNextSong">Next Song</button>
+        <button id="btnPlay">Play</button>
+        <button id="btnStop">Stop</button>    
+        <button id="btnPause">Pause</button>
+    </div>
+</body>
+<script>
+    //Set Up Arrays
+    const SONGS = ["Blues", "Epic", "Metal", "Upbeat"];
+    const FILENAMES = ["Blues.mp3", "Epic.wav", "Metal.wav", "Upbeat.mp3"];
+    
+    //Set up Other Globals
+    let currentSong = 0;
+    const PLAYER = new Audio(FILENAMES[currentSong]);
+
+    //Functions
+    let playMusic = function(){
+        PLAYER.pause();
+        let songToPlay = SONGS[currentSong];
+        let songFileName = FILENAMES[currentSong];
+        PLAYER.src = songFileName;
+        let playPromise = PLAYER.play();
+        if (playPromise !== undefined) {
+            playPromise.then(function() {
+                // Automatic playback started!
+                displaySongTitle();
+            }).catch(function(error) {
+                alert("Audio Playback Error");
+            });
+}
+    }
+
+    let displaySongTitle = function(){
+        document.getElementById("songTitle").innerHTML = SONGS[currentSong];
+    }
+
+    let stopMusic = function(){
+        PLAYER.pause();
+        PLAYER.currentTime =0;
+    }
+
+    let pauseMusic = function(){
+        PLAYER.pause();
+    }
+
+    let nextSong = function(){
+        if(currentSong < 3){
+            currentSong++;
+            playMusic();
+
+        } else{
+            currentSong = 0;
+            playMusic();
+        }
+    }
+
+    document.getElementById("btnPlay").addEventListener("click", playMusic);
+    document.getElementById("btnStop").addEventListener("click", stopMusic);
+    document.getElementById("btnPause").addEventListener("click", pauseMusic);
+    document.getElementById("btnNextSong").addEventListener("click", nextSong);
+
+
+
+  
+
+</script>
+</html>
